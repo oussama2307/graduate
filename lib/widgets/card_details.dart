@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/favorite_provider.dart';
 import 'package:provider/provider.dart';
@@ -7,16 +8,20 @@ import 'package:provider/provider.dart';
 class CardDetail extends StatefulWidget {
   final String type;
   final String soustype;
-  final String imageUrl;
+  final imageUrl;
   final String description;
   final String userName;
+  final pfp;
+  final liked;
   const CardDetail({
     super.key,
     required this.type,
     required this.soustype,
-    required this.imageUrl,
+    this.imageUrl = null,
     required this.description,
     required this.userName,
+    this.pfp = null,
+    this.liked = false,
   });
 
   @override
@@ -24,7 +29,6 @@ class CardDetail extends StatefulWidget {
 }
 
 class _CardDetailState extends State<CardDetail> {
-  bool pressed = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -57,13 +61,15 @@ class _CardDetailState extends State<CardDetail> {
             const SizedBox(
               height: 10,
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                widget.imageUrl,
-                fit: BoxFit.fill,
-              ),
-            ),
+            widget.imageUrl != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      urlhttp + widget.imageUrl,
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : const Text(""),
             const SizedBox(
               height: 10,
             ),
@@ -71,19 +77,23 @@ class _CardDetailState extends State<CardDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Description :",
+                  S.of(context).card_description,
                   style: GoogleFonts.roboto(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
+                const SizedBox(
+                  height: 6,
+                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   width: double.infinity,
                   decoration: BoxDecoration(
+                    color: greenColor,
                     border: Border.all(
-                      color: const Color.fromRGBO(0, 0, 0, 0.5),
+                      color: greenColor,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -91,7 +101,8 @@ class _CardDetailState extends State<CardDetail> {
                     widget.description,
                     style: GoogleFonts.roboto(
                       fontSize: 14,
-                      color: const Color.fromRGBO(0, 0, 0, 0.7),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 )
@@ -106,10 +117,31 @@ class _CardDetailState extends State<CardDetail> {
               children: [
                 Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/pfp.png'),
-                      radius: 18,
-                    ),
+                    widget.pfp == null
+                        ? CircleAvatar(
+                            radius: 18,
+                            child: Container(
+                              height: double.infinity,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                color: Colors.brown,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  widget.userName[0],
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundImage: NetworkImage(urlhttp + widget.pfp),
+                            radius: 18,
+                          ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Text(
@@ -125,9 +157,7 @@ class _CardDetailState extends State<CardDetail> {
                 ),
                 TextButton(
                   onPressed: () {
-                    setState(() {
-                      pressed = true;
-                    });
+                    setState(() {});
                     Provider.of<FavoriteProvider>(context, listen: false)
                         .addtofavorite(
                       details: {
@@ -141,7 +171,7 @@ class _CardDetailState extends State<CardDetail> {
                   },
                   child: Icon(
                     Icons.favorite,
-                    color: pressed
+                    color: widget.liked
                         ? Colors.red
                         : const Color.fromRGBO(0, 0, 0, 0.3),
                   ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:memoire/constants/utils.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'dart:convert';
 import 'package:memoire/global_varibales.dart';
-import 'package:memoire/home_page.dart';
-import 'package:memoire/providers/usename_provider.dart';
-import 'package:provider/provider.dart';
 
 class SingupPage extends StatefulWidget {
   const SingupPage({super.key});
@@ -23,8 +22,10 @@ class _SingupPageState extends State<SingupPage> {
   Future<void> registerUser(
       String name, String username, String password) async {
     if (username.contains(' ')) {
-      showErrorSnackBar(
-          "Votre nom d'utilisateur ne doit pas contenir d'espaces.");
+      Utils.showErrorSnackBar(
+        context,
+        "Votre nom d'utilisateur ne doit pas contenir d'espaces.",
+      );
       return;
     }
     final url = Uri.parse('$urlhttp/register');
@@ -38,49 +39,21 @@ class _SingupPageState extends State<SingupPage> {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
 
-      updateUserProvider(responseBody['user']);
-      navigateToHomePage();
+      Utils.updateUserProvider(context, responseBody['user']);
+      Utils.navigateToHomePage(context);
     } else if (response.statusCode == 409) {
       final responseBody = jsonDecode(response.body);
-      showErrorSnackBar(responseBody['message']);
+      Utils.showErrorSnackBar(context, responseBody['message']);
     }
   }
 
-  bool areFieldsFilled() {
-    return usernameController.text.isNotEmpty &&
-        nameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        confirmpassController.text.isNotEmpty;
-  }
-
-  bool areSame() {
-    return passwordController.text == confirmpassController.text;
-  }
-
-  void updateUserProvider(dynamic userDetails) {
-    Provider.of<UsernameProvider>(context, listen: false)
-        .changename(details: userDetails);
-  }
-
-  void showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
-  void navigateToHomePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ),
-    );
-  }
-
-  bool passwordStrong() {
-    return passwordController.text.length >= 8;
+  @override
+  void dispose() {
+    usernameController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+    confirmpassController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,7 +89,7 @@ class _SingupPageState extends State<SingupPage> {
               ),
               Center(
                 child: Image.asset(
-                  'assets/images/logo-no-background.png',
+                  'assets/images/logo_3.png',
                   width: 150,
                   height: 150,
                 ),
@@ -129,7 +102,7 @@ class _SingupPageState extends State<SingupPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Creer votre propre compte",
+                      S.of(context).signup_page_text1,
                       style: GoogleFonts.roboto(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -140,7 +113,7 @@ class _SingupPageState extends State<SingupPage> {
                       height: 10,
                     ),
                     TextFIeld(
-                      detail: "Nom",
+                      detail: S.of(context).signup_page_nom,
                       icon: const Icon(
                         Icons.person,
                         color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -152,7 +125,7 @@ class _SingupPageState extends State<SingupPage> {
                       height: 10,
                     ),
                     TextFIeld(
-                      detail: "Username",
+                      detail: S.of(context).signup_page_Username,
                       icon: const Icon(
                         Icons.person,
                         color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -168,7 +141,7 @@ class _SingupPageState extends State<SingupPage> {
                       controller: passwordController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock_outline),
-                        hintText: "Mot de passe",
+                        hintText: S.of(context).signup_page_password,
                         border: border,
                         focusedBorder: border,
                         enabledBorder: border,
@@ -186,14 +159,15 @@ class _SingupPageState extends State<SingupPage> {
                       controller: confirmpassController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock_outline),
-                        hintText: "Confirmer mot de passe",
+                        hintText: S.of(context).signup_page_confirming,
                         border: border,
                         focusedBorder: border,
                         enabledBorder: border,
                         hintStyle: GoogleFonts.roboto(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: areSame()
+                          color: Utils.areSame(
+                                  passwordController, confirmpassController)
                               ? const Color.fromRGBO(0, 0, 0, 0.5)
                               : Colors.red,
                         ),
@@ -211,9 +185,16 @@ class _SingupPageState extends State<SingupPage> {
               /**************************************************** */
               ElevatedButton(
                 onPressed: () {
-                  if (areFieldsFilled()) {
-                    if (passwordStrong()) {
-                      if (areSame()) {
+                  if (Utils.areFieldsFilledSignUp(
+                      usernameController,
+                      nameController,
+                      passwordController,
+                      confirmpassController)) {
+                    if (Utils.passwordStrong(passwordController)) {
+                      if (Utils.areSame(
+                        passwordController,
+                        confirmpassController,
+                      )) {
                         registerUser(
                           nameController.text,
                           usernameController.text,
@@ -251,7 +232,7 @@ class _SingupPageState extends State<SingupPage> {
                   ),
                 ),
                 child: Text(
-                  "SignUp",
+                  S.of(context).signup_page_button,
                   style: GoogleFonts.roboto(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

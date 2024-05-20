@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-const api = "https://cb46-105-104-59-7.ngrok-free.app";
 const greenColor = Color.fromARGB(255, 34, 112, 36);
 const greyColor = Color.fromRGBO(241, 237, 237, 0.949);
 List<String> algeriaCities = [
@@ -80,7 +79,7 @@ final posts = [
   },
 ];
 
-final filters = [
+final Filters = [
   {
     "name": "Vente",
     "icon": const Icon(Icons.shopping_cart),
@@ -90,12 +89,8 @@ final filters = [
     "icon": const Icon(Icons.home),
   },
   {
-    "name": "Equipement",
-    "icon": const Icon(Icons.handyman),
-  },
-  {
-    "name": "Surfaces",
-    "icon": const Icon(Icons.terrain),
+    "name": "Chercher",
+    "icon": const Icon(Icons.search_outlined),
   },
   {
     "name": "Tout",
@@ -103,4 +98,5 @@ final filters = [
   },
 ];
 
-const String urlhttp = 'https://8da2-105-103-200-246.ngrok-free.app';
+const List<String> languages = ["fr", "ar", "en"];
+const String urlhttp = 'http://localhost:3000';

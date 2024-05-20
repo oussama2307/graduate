@@ -29,10 +29,10 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: greenColor,
+      backgroundColor: greyColor,
       body: Center(
         child: Image.asset(
-          'assets/images/logo.png',
+          'assets/images/logo_3.png',
           width: 200,
           height: 200,
         ),

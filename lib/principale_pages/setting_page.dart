@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/authentication_pages/login_page.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/principale_pages/addposts_page.dart';
 import 'package:memoire/principale_pages/profile_page.dart';
+import 'package:memoire/providers/language_provider.dart';
 import 'package:memoire/secondary_pages/confidence_page.dart';
 import 'package:memoire/secondary_pages/contact_rigths_page.dart';
 import 'package:memoire/secondary_pages/my_posts_page.dart';
 
 import 'package:memoire/widgets/appbar_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -17,8 +22,55 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  void showOptionsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            S.of(context).setting_list,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: languages.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(languages[index]),
+                  onTap: () {
+                    Provider.of<LanguageProvider>(context, listen: false)
+                        .changelang(
+                      lang: languages[index],
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> logout() async {
+    await SharedPreferences.getInstance()
+        .then((prefs) => prefs.clear()); // Clear all user data
+    // Optional backend invalidation call here
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final languagechosen =
+        Provider.of<LanguageProvider>(context, listen: false).language;
     return Scaffold(
       backgroundColor: greyColor,
       appBar: const PreferredSize(
@@ -31,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Parametres",
+              S.of(context).setting_title,
               style: GoogleFonts.roboto(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -70,7 +122,7 @@ class _SettingPageState extends State<SettingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Mon profile",
+                          S.of(context).setting_text1,
                           style: GoogleFonts.roboto(
                             color: const Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
@@ -100,7 +152,7 @@ class _SettingPageState extends State<SettingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Mes publications",
+                          S.of(context).setting_text2,
                           style: GoogleFonts.roboto(
                             color: const Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
@@ -113,6 +165,41 @@ class _SettingPageState extends State<SettingPage> {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 35,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.of(context).setting_text3,
+                        style: GoogleFonts.roboto(
+                          color: const Color.fromRGBO(0, 0, 0, 0.5),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showOptionsDialog();
+                        },
+                        child: Chip(
+                          side: const BorderSide(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            width: 2,
+                            style: BorderStyle.solid,
+                          ),
+                          labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          label: Text(languagechosen),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -149,7 +236,7 @@ class _SettingPageState extends State<SettingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Confidentialité",
+                          S.of(context).setting_text4,
                           style: GoogleFonts.roboto(
                             color: const Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
@@ -179,7 +266,7 @@ class _SettingPageState extends State<SettingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Contact et les droits de publication",
+                          S.of(context).setting_text5,
                           style: GoogleFonts.roboto(
                             color: const Color.fromRGBO(0, 0, 0, 0.5),
                             fontSize: 16,
@@ -198,7 +285,9 @@ class _SettingPageState extends State<SettingPage> {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                logout();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 minimumSize: const Size(double.infinity, 60),
@@ -207,7 +296,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
               ),
               child: Text(
-                "Deconnecter",
+                S.of(context).setting_button,
                 style: GoogleFonts.roboto(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

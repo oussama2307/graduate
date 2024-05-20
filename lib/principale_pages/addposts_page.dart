@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:memoire/providers/posts_provider.dart';
 import 'package:memoire/providers/usename_provider.dart';
 import 'package:memoire/widgets/appbar_widget.dart';
+import 'package:memoire/widgets/smoth_slides_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyPostPage extends StatefulWidget {
@@ -29,17 +32,96 @@ class _MyPostPageState extends State<MyPostPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
-  File? selectedimage;
+  List<XFile>? selectedimage;
   Future pickimage() async {
-    final pickedimage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedimage = await ImagePicker().pickMultiImage();
 
     if (pickedimage == null) {
       return;
     }
     setState(() {
-      selectedimage = File(pickedimage.path);
+      selectedimage = pickedimage;
     });
+
+    setState(() {
+      _pages = List.generate(
+        selectedimage!.length,
+        (index) => ImagePlaceholder(
+          path: File(selectedimage![index].path),
+        ),
+      );
+    });
+  }
+
+  late List<Widget> _pages;
+
+  bool isfieldsfilled() {
+    return typeController.text.isNotEmpty &&
+        serviceController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty &&
+        priceController.text.isNotEmpty;
+  }
+
+  void showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  Future<void> submitPost() async {
+    if (isfieldsfilled()) {
+      final type = typeController.text;
+      final service = serviceController.text;
+      final description = descriptionController.text;
+      final price = priceController.text;
+
+      final uri = Uri.parse('$urlhttp/api/posts');
+      final request = http.MultipartRequest('POST', uri);
+      request.fields['userID'] =
+          '${Provider.of<UsernameProvider>(context, listen: false).user['userID']}';
+      request.fields['type'] = type;
+      request.fields['service'] = service;
+      request.fields['description'] = description;
+      request.fields['price'] = price.toString();
+
+      if (selectedimage != null) {
+        for (final image in selectedimage!) {
+          final imageFile =
+              await http.MultipartFile.fromPath('images[]', image.path);
+          request.files.add(imageFile);
+        }
+      } else {
+        // Add an empty image file to the request
+        final emptyImage = await http.MultipartFile.fromString('images[]', '');
+        request.files.add(emptyImage);
+      }
+
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        print("post created successfully");
+      } else {
+        print("post failed");
+      }
+    } else {
+      showErrorSnackBar("Completer les information necissaires");
+    }
+  }
+
+  void updatePostsProvider(dynamic postDetails) {
+    Provider.of<PostsProvider>(context, listen: false)
+        .addtoposts(postDetails: postDetails);
+  }
+
+  @override
+  void dispose() {
+    typeController.dispose();
+    serviceController.dispose();
+    descriptionController.dispose();
+    priceController.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,16 +148,43 @@ class _MyPostPageState extends State<MyPostPage> {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 22,
-                    backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage("assets/images/pfp.png"),
-                    ),
+                    backgroundColor: const Color.fromRGBO(0, 0, 0, 0.5),
+                    child: Provider.of<UsernameProvider>(context, listen: false)
+                                .user['profile_picture'] !=
+                            null
+                        ? CircleAvatar(
+                            radius: 20,
+                            backgroundImage: NetworkImage(urlhttp +
+                                Provider.of<UsernameProvider>(context,
+                                        listen: false)
+                                    .user["profile_picture"]),
+                          )
+                        : CircleAvatar(
+                            radius: 20,
+                            child: Container(
+                              height: double.infinity,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                color: Colors.brown,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  Provider.of<UsernameProvider>(context)
+                                      .user['name'][0],
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                     child: Text(
                       Provider.of<UsernameProvider>(context).user["name"],
                       style: GoogleFonts.roboto(
@@ -92,7 +201,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 15,
               ),
               Text(
-                "Type :",
+                S.of(context).add_text1,
                 style: GoogleFonts.roboto(
                   color: Colors.black,
                   fontSize: 18,
@@ -103,6 +212,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 5,
               ),
               DropdownMenu(
+                controller: typeController,
                 inputDecorationTheme: InputDecorationTheme(
                   hintStyle: GoogleFonts.roboto(
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
@@ -124,7 +234,7 @@ class _MyPostPageState extends State<MyPostPage> {
                       (e) => DropdownMenuEntry(value: e, label: e),
                     )
                     .toList(),
-                hintText: "Selectionner le type",
+                hintText: S.of(context).add_case1,
                 onSelected: (value) {
                   setState(() {
                     selected = value;
@@ -136,7 +246,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 25,
               ),
               Text(
-                "Service :",
+                S.of(context).add_text2,
                 style: GoogleFonts.roboto(
                   color: Colors.black,
                   fontSize: 18,
@@ -146,8 +256,9 @@ class _MyPostPageState extends State<MyPostPage> {
               const SizedBox(
                 height: 5,
               ),
-              Container(
+              SizedBox(
                 child: DropdownMenu(
+                  controller: serviceController,
                   inputDecorationTheme: InputDecorationTheme(
                     hintStyle: GoogleFonts.roboto(
                       color: const Color.fromRGBO(0, 0, 0, 0.5),
@@ -169,7 +280,7 @@ class _MyPostPageState extends State<MyPostPage> {
                         (e) => DropdownMenuEntry(value: e, label: e),
                       )
                       .toList(),
-                  hintText: "Selectionner le service",
+                  hintText: S.of(context).add_case2,
                   onSelected: (value) {
                     setState(() {
                       selected_2 = value;
@@ -182,7 +293,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 25,
               ),
               Text(
-                "Description :",
+                S.of(context).add_text3,
                 style: GoogleFonts.roboto(
                   color: Colors.black,
                   fontSize: 18,
@@ -193,9 +304,10 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 5,
               ),
               TextField(
+                controller: descriptionController,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  hintText: "Description...",
+                  hintText: S.of(context).add_case3,
                   hintStyle: GoogleFonts.roboto(
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
                     fontSize: 14,
@@ -211,7 +323,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 25,
               ),
               Text(
-                "Prix :",
+                S.of(context).add_text4,
                 style: GoogleFonts.roboto(
                   color: Colors.black,
                   fontSize: 18,
@@ -222,8 +334,9 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 5,
               ),
               TextField(
+                controller: priceController,
                 decoration: InputDecoration(
-                  hintText: "Prix",
+                  hintText: S.of(context).add_case4,
                   hintStyle: GoogleFonts.roboto(
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
                     fontSize: 14,
@@ -239,7 +352,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 height: 25,
               ),
               Text(
-                "Image :",
+                S.of(context).add_text5,
                 style: GoogleFonts.roboto(
                   color: Colors.black,
                   fontSize: 18,
@@ -271,7 +384,7 @@ class _MyPostPageState extends State<MyPostPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: Text(
-                        "Inserer image",
+                        S.of(context).add_button1,
                         style: GoogleFonts.roboto(
                           color: Colors.black,
                           fontSize: 18,
@@ -282,16 +395,21 @@ class _MyPostPageState extends State<MyPostPage> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 30,
+              ),
               /************************************************* */
               selectedimage != null
-                  ? Image.file(selectedimage!)
+                  ? SlidesWidget(pages: _pages)
                   : const Text(""),
               /*************************************************** */
               const SizedBox(
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await submitPost();
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: greenColor,
                   minimumSize: const Size(double.infinity, 60),
@@ -300,7 +418,7 @@ class _MyPostPageState extends State<MyPostPage> {
                   ),
                 ),
                 child: Text(
-                  "Publier",
+                  S.of(context).add_button2,
                   style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontSize: 18,
@@ -311,6 +429,25 @@ class _MyPostPageState extends State<MyPostPage> {
             ],
           ),
         ]),
+      ),
+    );
+  }
+}
+
+class ImagePlaceholder extends StatelessWidget {
+  final File path;
+  const ImagePlaceholder({
+    super.key,
+    required this.path,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Image.file(
+        path,
+        fit: BoxFit.cover,
       ),
     );
   }

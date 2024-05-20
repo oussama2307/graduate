@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memoire/authentication_pages/login_page.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:memoire/welcoming_pages/first_page.dart';
@@ -21,7 +22,7 @@ class ThirdPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Recuperer",
+                  S.of(context).third_page_text1,
                   style: GoogleFonts.roboto(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class ThirdPage extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  "Recuperer les meilleurs affaires dans le marcher et pour des prix raisonables",
+                  S.of(context).third_page_text2,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     color: const Color.fromARGB(255, 13, 51, 82),

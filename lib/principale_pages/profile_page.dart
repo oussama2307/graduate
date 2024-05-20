@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memoire/constants/field.dart';
+import 'package:memoire/constants/utils.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/usename_provider.dart';
 import 'package:provider/provider.dart';
@@ -90,31 +91,6 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Widget oneofthem() {
-    if (Provider.of<UsernameProvider>(context).user["profile_picture"] ==
-        null) {
-      return Text(
-        Provider.of<UsernameProvider>(context).user["name"][0],
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 60,
-          fontWeight: FontWeight.bold,
-        ),
-      );
-    } else {
-      return ClipOval(
-        child: Image.network(
-          '$urlhttp' +
-              Provider.of<UsernameProvider>(context, listen: false)
-                  .user["profile_picture"],
-          width: 100, // Set the desired width
-          height: 100, // Set the desired height
-          fit: BoxFit.cover,
-        ),
-      );
-    }
-  }
-
   String? profilePictureUrl;
   Future<void> uploadpfp() async {
     if (selectedimage != null) {
@@ -160,41 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       print("no image selected");
     }
-  }
-
-  void showFlushbar(BuildContext context, String message,
-      {color = Colors.green}) {
-    Flushbar(
-      message: message,
-      duration: const Duration(seconds: 3),
-      maxWidth: 350,
-      flushbarPosition: FlushbarPosition.BOTTOM,
-      flushbarStyle: FlushbarStyle.FLOATING,
-      borderRadius: BorderRadius.circular(10),
-      reverseAnimationCurve: Curves.decelerate,
-      forwardAnimationCurve: Curves.elasticInOut,
-      backgroundColor: color, // Set the background color to green
-      boxShadows: const [
-        BoxShadow(
-          color: Colors.black38,
-          offset:
-              Offset(0.0, 6.0), // Increase the offset to match the elevation
-          blurRadius: 6.0, // Increase the blur radius to match the elevation
-        ),
-      ],
-      messageText: Text(
-        message,
-        style: const TextStyle(
-          color: Colors.white, // Set the text color to white
-          fontSize: 16.0, // Set the font size to 16.0
-          fontWeight: FontWeight.bold, // Set the font weight to bold
-        ),
-      ),
-    ).show(context);
-  }
-
-  bool passwordStrong() {
-    return confirmpasswordController.text.length >= 8;
   }
 
   bool truepassword() {
@@ -243,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
         });
 
         print(responseBody);
-        showFlushbar(context, message);
+        Utils.showFlushbar(context, message);
       }
     } on Exception catch (e) {
       setState(() {
@@ -265,20 +206,20 @@ class _ProfilePageState extends State<ProfilePage> {
     if (passwordController.text.isNotEmpty) {
       if (truepassword()) {
         if (confirmpasswordController.text.isNotEmpty) {
-          if (passwordStrong()) {
+          if (Utils.passwordStrong(confirmpasswordController)) {
             updateuser();
-            showFlushbar(context, "Mettre à jour");
+            Utils.showFlushbar(context, "Mettre à jour");
           } else {
-            showFlushbar(context,
+            Utils.showFlushbar(context,
                 "Votre mot de passe faut contenir au moins 8 carachteres",
                 color: Colors.red);
           }
         } else {
           updateuser();
-          showFlushbar(context, "Mettre à jour");
+          Utils.showFlushbar(context, "Mettre à jour");
         }
       } else {
-        showFlushbar(context,
+        Utils.showFlushbar(context,
             "Pour changer le mot de passe il faut valider l'ancien mot de passe correctement",
             color: Colors.red);
       }
@@ -286,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (confirmpasswordController.text.isEmpty) {
         updateuser();
       } else {
-        showFlushbar(context,
+        Utils.showFlushbar(context,
             "Pour changer le mot de passe if faut valider l'ancien mot de passe correctement",
             color: Colors.red);
       }
@@ -330,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Text(
-                      "Mon Profile",
+                      S.of(context).profile_title,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
                         color: Colors.black,
@@ -357,7 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Center(
                         child: selectedimage == null
-                            ? oneofthem()
+                            ? Utils.oneofthem(context)
                             : ClipOval(
                                 child: Image.file(
                                   selectedimage!,
@@ -398,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 MyFields(
                   controller: nameController,
                   icon: const Icon(Icons.person),
-                  hint: "Nom",
+                  hint: S.of(context).profile_case1,
                 ),
                 const SizedBox(
                   height: 20,
@@ -406,7 +347,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 MyFields(
                   controller: passwordController,
                   icon: const Icon(Icons.lock),
-                  hint: "Mot de passe",
+                  hint: S.of(context).profile_case2,
                   ispassword: true,
                 ),
                 const SizedBox(
@@ -415,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 MyFields(
                   controller: confirmpasswordController,
                   icon: const Icon(Icons.lock),
-                  hint: "Nouveau Mot de passe",
+                  hint: S.of(context).profile_case3,
                   ispassword: true,
                 ),
                 const SizedBox(
@@ -423,7 +364,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 InputDecorator(
                   decoration: InputDecoration(
-                    hintText: "Wilaya",
+                    hintText: S.of(context).profile_case4,
                     border: border,
                     enabledBorder: border,
                     focusedBorder: border,
@@ -432,7 +373,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: GestureDetector(
                     onTap: showOptionsDialog,
                     child: Text(
-                      selectedOption.isNotEmpty ? selectedOption : 'Wilaya',
+                      selectedOption.isNotEmpty
+                          ? selectedOption
+                          : S.of(context).profile_case4,
                       style: TextStyle(
                         color: selectedOption.isNotEmpty
                             ? Colors.black
@@ -459,7 +402,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   child: Text(
-                    "Modifier",
+                    S.of(context).profile_button,
                     style: GoogleFonts.roboto(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -471,47 +414,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyFields extends StatelessWidget {
-  final TextEditingController controller;
-  final Icon icon;
-  final bool ispassword;
-  final String hint;
-  final bool Enable;
-
-  const MyFields({
-    super.key,
-    required this.controller,
-    required this.icon,
-    this.ispassword = false,
-    required this.hint,
-    this.Enable = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
-      borderSide: const BorderSide(
-        color: Color.fromRGBO(0, 0, 0, 0.5),
-        width: 1,
-        style: BorderStyle.solid,
-      ),
-      borderRadius: BorderRadius.circular(10),
-    );
-    return TextField(
-      enabled: Enable,
-      obscureText: ispassword,
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: border,
-        enabledBorder: border,
-        focusedBorder: border,
-        suffixIcon: icon,
       ),
     );
   }

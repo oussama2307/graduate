@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memoire/authentication_pages/singup_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:memoire/constants/utils.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'dart:convert';
-
-import 'package:memoire/home_page.dart';
-import 'package:memoire/providers/usename_provider.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -43,14 +41,14 @@ class _LoginPageState extends State<LoginPage> {
           _message = responseBody['message'];
         });
 
-        updateUserProvider(responseBody['user']);
-        navigateToHomePage();
+        Utils.updateUserProvider(context, responseBody['user']);
+        Utils.navigateToHomePage(context);
       } else {
         final responseBody = jsonDecode(response.body);
         setState(() {
           _message = responseBody['message'];
         });
-        showErrorSnackBar(_message);
+        Utils.showErrorSnackBar(context, _message);
       }
     } on Exception catch (e) {
       setState(() {
@@ -59,31 +57,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  bool areFieldsFilled() {
-    return usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty;
-  }
-
-  void showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
-  void updateUserProvider(dynamic userDetails) {
-    Provider.of<UsernameProvider>(context, listen: false)
-        .changename(details: userDetails);
-  }
-
-  void navigateToHomePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ),
-    );
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -106,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   Image.asset(
-                    'assets/images/logo-no-background.png',
+                    'assets/images/logo_3.png',
                     width: 150,
                     height: 150,
                   ),
@@ -114,14 +92,14 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   Text(
-                    "Salut , Bienvenue",
+                    S.of(context).login_page_text1,
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "sur ShopX",
+                    S.of(context).login_page_text2,
                     style: Theme.of(context).textTheme.displayLarge,
                   )
                 ],
@@ -135,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Connecter à votre compte",
+                    S.of(context).login_page_text3,
                     style: GoogleFonts.roboto(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -153,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Color.fromRGBO(0, 0, 0, 0.5),
                         size: 18,
                       ),
-                      hintText: "Username",
+                      hintText: S.of(context).login_page_username,
                       border: border,
                       focusedBorder: border,
                       enabledBorder: border,
@@ -176,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Color.fromRGBO(0, 0, 0, 0.5),
                         size: 18,
                       ),
-                      hintText: "Mot de passe",
+                      hintText: S.of(context).login_page_password,
                       border: border,
                       focusedBorder: border,
                       enabledBorder: border,
@@ -192,7 +170,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (areFieldsFilled()) {
+                      if (Utils.areFieldsFilled(
+                          usernameController, passwordController)) {
                         login();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -210,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: Text(
-                      "Login",
+                      S.of(context).login_page_button,
                       style: GoogleFonts.roboto(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -228,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "T'as pas un compte?",
+                  S.of(context).login_page_question,
                   style: GoogleFonts.roboto(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -244,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child: Text(
-                    "Creer compte",
+                    S.of(context).login_page_proposition,
                     style: GoogleFonts.roboto(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

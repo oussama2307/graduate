@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/welcoming_pages/third_page.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -21,7 +22,7 @@ class SecondPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Explorer",
+                  S.of(context).second_page_text1,
                   style: GoogleFonts.roboto(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class SecondPage extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  "Explorer des nouveaux affaires ou d'equipements pour ameliorer votre projet et gonfler votre profit",
+                  S.of(context).second_page_text2,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     color: const Color.fromARGB(255, 13, 51, 82),

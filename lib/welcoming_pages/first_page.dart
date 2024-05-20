@@ -4,6 +4,8 @@ import 'package:memoire/global_varibales.dart';
 import 'package:memoire/welcoming_pages/second_page.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../generated/l10n.dart';
+
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
 
@@ -25,7 +27,7 @@ class _FirstPageState extends State<FirstPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Bienvenue !",
+                  S.of(context).first_page_text1,
                   style: GoogleFonts.roboto(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -36,7 +38,7 @@ class _FirstPageState extends State<FirstPage> {
                   height: 15,
                 ),
                 Text(
-                  "Bienvenue sur ShopX, commencez votre aventure pour faire des affaires.",
+                  S.of(context).first_page_text2,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     color: const Color.fromARGB(255, 13, 51, 82),
