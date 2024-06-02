@@ -749,6 +749,256 @@ class S {
       args: [],
     );
   }
+
+  /// `My Favorites`
+  String get favorite_title {
+    return Intl.message(
+      'My Favorites',
+      name: 'favorite_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Posts`
+  String get myposts_title {
+    return Intl.message(
+      'My Posts',
+      name: 'myposts_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get details_title {
+    return Intl.message(
+      'Details',
+      name: 'details_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description:`
+  String get details_text1 {
+    return Intl.message(
+      'Description:',
+      name: 'details_text1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price:`
+  String get details_text2 {
+    return Intl.message(
+      'Price:',
+      name: 'details_text2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get details_text3 {
+    return Intl.message(
+      'Type',
+      name: 'details_text3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service`
+  String get details_text4 {
+    return Intl.message(
+      'Service',
+      name: 'details_text4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule`
+  String get details_text5 {
+    return Intl.message(
+      'Schedule',
+      name: 'details_text5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Availability`
+  String get details_text6 {
+    return Intl.message(
+      'Availability',
+      name: 'details_text6',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Images:`
+  String get details_text7 {
+    return Intl.message(
+      'Images:',
+      name: 'details_text7',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No images`
+  String get details_noimages {
+    return Intl.message(
+      'No images',
+      name: 'details_noimages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify`
+  String get details_modify {
+    return Intl.message(
+      'Modify',
+      name: 'details_modify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get details_delete {
+    return Intl.message(
+      'Delete',
+      name: 'details_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Message`
+  String get details_sendmessage {
+    return Intl.message(
+      'Send Message',
+      name: 'details_sendmessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update_tilte {
+    return Intl.message(
+      'Update',
+      name: 'update_tilte',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type:`
+  String get update_text1 {
+    return Intl.message(
+      'Type:',
+      name: 'update_text1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service:`
+  String get update_text2 {
+    return Intl.message(
+      'Service:',
+      name: 'update_text2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Availability:`
+  String get update_text3 {
+    return Intl.message(
+      'Availability:',
+      name: 'update_text3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description:`
+  String get update_text4 {
+    return Intl.message(
+      'Description:',
+      name: 'update_text4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price:`
+  String get update_text5 {
+    return Intl.message(
+      'Price:',
+      name: 'update_text5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify`
+  String get update_button {
+    return Intl.message(
+      'Modify',
+      name: 'update_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmation`
+  String get delete_dialogue_title {
+    return Intl.message(
+      'Confirmation',
+      name: 'delete_dialogue_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure to delete?`
+  String get delete_dialogue_content {
+    return Intl.message(
+      'Are you sure to delete?',
+      name: 'delete_dialogue_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get delete_dialogue_yes {
+    return Intl.message(
+      'Yes',
+      name: 'delete_dialogue_yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get delete_dialogue_no {
+    return Intl.message(
+      'No',
+      name: 'delete_dialogue_no',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

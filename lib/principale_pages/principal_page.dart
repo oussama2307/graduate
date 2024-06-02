@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/constants/utils.dart';
 import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/secondary_pages/product_details.dart';
@@ -16,10 +20,13 @@ class _PostsPageState extends State<PostsPage> {
   List<dynamic>? _posts;
   List<dynamic>? _allPosts;
   String? _selectedFilter;
+  late TextEditingController _searchController;
   @override
   void initState() {
     super.initState();
     _fetchPosts();
+    _searchController = TextEditingController();
+    _searchController.addListener(_onSearchChanged);
   }
 
   Future<void> _fetchPosts() async {
@@ -47,6 +54,27 @@ class _PostsPageState extends State<PostsPage> {
       if (filterName == "Tout") {
         _posts = _allPosts;
       }
+    });
+  }
+
+  Timer? _debounce;
+
+  void _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _filterPosts(_searchController.text);
+    });
+  }
+
+  void _filterPosts(String query) {
+    List<dynamic> filteredPosts = _allPosts!.where((post) {
+      final postName = post['name'].toString().toLowerCase();
+      final searchQuery = query.toLowerCase();
+      return postName.contains(searchQuery);
+    }).toList();
+
+    setState(() {
+      _posts = query.isEmpty ? _allPosts : filteredPosts;
     });
   }
 
@@ -132,6 +160,9 @@ class _PostsPageState extends State<PostsPage> {
                     ),
                   ),
                   /********************************************************************** */
+                  
+                  
+                  /******************************************************************** */
                   Expanded(
                     child: ListView.builder(
                       itemCount: _posts!.length,
@@ -148,6 +179,7 @@ class _PostsPageState extends State<PostsPage> {
                             );
                           },
                           child: CardDetail(
+                            postid: post['post_id'],
                             type: post['type'],
                             soustype: post['service'],
                             description: post['description'],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/usename_provider.dart';
 import 'package:memoire/secondary_pages/product_details.dart';
@@ -42,9 +43,23 @@ class _MyPostsPageState extends State<MyPostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: greyColor,
-      appBar: const PreferredSize(
-        preferredSize: Size(double.infinity, 57),
-        child: AppbarWidget(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: greenColor,
+        title: Text(
+          S.of(context).myposts_title,
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
+        ),
       ),
       body: _userPosts != null
           ? Container(
@@ -56,7 +71,7 @@ class _MyPostsPageState extends State<MyPostsPage> {
                     height: 5,
                   ),
                   Text(
-                    "Mes publication",
+                    S.of(context).myposts_title,
                     style: GoogleFonts.roboto(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

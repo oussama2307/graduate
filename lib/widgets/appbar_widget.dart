@@ -11,7 +11,7 @@ class AppbarWidget extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: AppBar(
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         backgroundColor: greenColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

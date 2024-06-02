@@ -1,20 +1,26 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/constants/utils.dart';
 import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/favorite_provider.dart';
+import 'package:memoire/providers/usename_provider.dart';
 import 'package:provider/provider.dart';
 
 class CardDetail extends StatefulWidget {
+  final dynamic postid;
   final String type;
   final String soustype;
   final imageUrl;
   final String description;
   final String userName;
   final pfp;
-  final liked;
+  final bool liked;
   const CardDetail({
     super.key,
+    required this.postid,
     required this.type,
     required this.soustype,
     this.imageUrl = null,
@@ -29,6 +35,39 @@ class CardDetail extends StatefulWidget {
 }
 
 class _CardDetailState extends State<CardDetail> {
+  Future<void> uploadfavorite({
+    required postid,
+    required userid,
+  }) async {
+    final url = Uri.parse('$urlhttp/upload_favorite');
+    final response = await http.post(
+      url,
+      body: jsonEncode(
+        {
+          'user_id': userid,
+          'post_id': postid,
+        },
+      ),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      Utils.showErrorSnackBar(
+        context,
+        responseBody['message'],
+      );
+    } else {
+      print("an error has occured");
+    }
+  }
+
+  late bool _isLiked;
+  @override
+  void initState() {
+    super.initState();
+    _isLiked = widget.liked;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -157,24 +196,28 @@ class _CardDetailState extends State<CardDetail> {
                 ),
                 TextButton(
                   onPressed: () {
-                    setState(() {});
-                    Provider.of<FavoriteProvider>(context, listen: false)
-                        .addtofavorite(
-                      details: {
-                        "type": widget.type,
-                        "soustype": widget.soustype,
-                        "imageurl": widget.imageUrl,
-                        "description": widget.description,
-                        "username": widget.userName,
-                      },
-                    );
+                    if (!widget.liked) {
+                      setState(() {
+                        _isLiked = true;
+                      });
+                      uploadfavorite(
+                        postid: widget.postid,
+                        userid: Provider.of<UsernameProvider>(context,
+                                listen: false)
+                            .user['userID'],
+                      );
+                    }
                   },
-                  child: Icon(
-                    Icons.favorite,
-                    color: widget.liked
-                        ? Colors.red
-                        : const Color.fromRGBO(0, 0, 0, 0.3),
-                  ),
+                  child: widget.userName !=
+                          Provider.of<UsernameProvider>(context, listen: false)
+                              .user['name']
+                      ? Icon(
+                          Icons.favorite,
+                          color: _isLiked
+                              ? Colors.red
+                              : const Color.fromRGBO(0, 0, 0, 0.3),
+                        )
+                      : const Text(""),
                 ),
               ],
             )

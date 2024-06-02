@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/usename_provider.dart';
 import 'package:memoire/secondary_pages/updating_product_page.dart';
@@ -27,9 +28,9 @@ class ProductDetailsState extends State<ProductDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text(
-              "confirmation",
-              style: TextStyle(
+            title: Text(
+              S.of(context).delete_dialogue_title,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.red,
               ),
@@ -49,9 +50,9 @@ class ProductDetailsState extends State<ProductDetails> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "NO",
-                      style: TextStyle(color: Colors.red),
+                    child: Text(
+                      S.of(context).delete_dialogue_no,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
                   TextButton(
@@ -64,9 +65,9 @@ class ProductDetailsState extends State<ProductDetails> {
                       );
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "YES",
-                      style: TextStyle(color: Colors.green),
+                    child: Text(
+                      S.of(context).delete_dialogue_yes,
+                      style: const TextStyle(color: Colors.green),
                     ),
                   ),
                 ],
@@ -80,10 +81,10 @@ class ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       backgroundColor: greyColor,
       appBar: AppBar(
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         backgroundColor: greenColor,
         title: Text(
-          "Detailles",
+          S.of(context).details_title,
           style: GoogleFonts.roboto(
             fontSize: 18,
             color: Colors.white,
@@ -108,7 +109,7 @@ class ProductDetailsState extends State<ProductDetails> {
                     height: 10,
                   ),
                   Text(
-                    "Description :",
+                    S.of(context).details_text1,
                     style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 16,
@@ -139,7 +140,7 @@ class ProductDetailsState extends State<ProductDetails> {
                     height: 20,
                   ),
                   Text(
-                    "Prix :",
+                    S.of(context).details_text2,
                     style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 16,
@@ -176,7 +177,7 @@ class ProductDetailsState extends State<ProductDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Type ",
+                          S.of(context).details_text3,
                           style: GoogleFonts.roboto(
                             color: Colors.black,
                             fontSize: 16,
@@ -216,7 +217,7 @@ class ProductDetailsState extends State<ProductDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Service ",
+                          S.of(context).details_text4,
                           style: GoogleFonts.roboto(
                             color: Colors.black,
                             fontSize: 16,
@@ -256,7 +257,7 @@ class ProductDetailsState extends State<ProductDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Service ",
+                          S.of(context).details_text5,
                           style: GoogleFonts.roboto(
                             color: Colors.black,
                             fontSize: 16,
@@ -300,7 +301,7 @@ class ProductDetailsState extends State<ProductDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Disponibilité ",
+                          S.of(context).details_text6,
                           style: GoogleFonts.roboto(
                             color: Colors.black,
                             fontSize: 16,
@@ -313,15 +314,18 @@ class ProductDetailsState extends State<ProductDetails> {
                           radius: const Radius.circular(10),
                           child: Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 102, 231, 106),
-                              borderRadius: BorderRadius.all(
+                            decoration: BoxDecoration(
+                              color: widget.product["disponibilité"] ==
+                                      "Disponible"
+                                  ? const Color.fromARGB(255, 102, 231, 106)
+                                  : Colors.red,
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(10),
                               ),
                             ),
                             child: Center(
                               child: Text(
-                                "Disponible",
+                                widget.product["disponibilité"],
                                 style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -402,7 +406,7 @@ class ProductDetailsState extends State<ProductDetails> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      "Images :",
+                      S.of(context).details_text7,
                       style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 16,
@@ -420,7 +424,7 @@ class ProductDetailsState extends State<ProductDetails> {
                             horizontal: 10,
                           ),
                           child: Text(
-                            "Il n'y a pas d'images",
+                            S.of(context).details_noimages,
                             style: GoogleFonts.roboto(
                               color: const Color.fromRGBO(0, 0, 0, 0.5),
                               fontWeight: FontWeight.bold,
@@ -451,7 +455,7 @@ class ProductDetailsState extends State<ProductDetails> {
                       ),
                     ),
                     child: Text(
-                      "Envoyer message",
+                      S.of(context).details_sendmessage,
                       style: GoogleFonts.roboto(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -466,7 +470,8 @@ class ProductDetailsState extends State<ProductDetails> {
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              confirmation("Etes vous sure du supprimer ?");
+                              confirmation(
+                                  S.of(context).delete_dialogue_content);
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red,
@@ -475,7 +480,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                 ),
                                 minimumSize: const Size(double.infinity, 50)),
                             child: Text(
-                              "Supprimer",
+                              S.of(context).details_delete,
                               style: GoogleFonts.roboto(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -505,7 +510,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                 ),
                                 minimumSize: const Size(double.infinity, 50)),
                             child: Text(
-                              "Modifier",
+                              S.of(context).details_modify,
                               style: GoogleFonts.roboto(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

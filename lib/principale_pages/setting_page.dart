@@ -73,9 +73,23 @@ class _SettingPageState extends State<SettingPage> {
         Provider.of<LanguageProvider>(context, listen: false).language;
     return Scaffold(
       backgroundColor: greyColor,
-      appBar: const PreferredSize(
-        preferredSize: Size(double.infinity, 57),
-        child: AppbarWidget(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: greenColor,
+        title: Text(
+          S.of(context).setting_title,
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),

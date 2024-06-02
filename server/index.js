@@ -218,7 +218,7 @@ app.post(
 
     // Insert post data into the "Posts" table
     db.query(
-      "INSERT INTO Posts (user_id, type, service, description, price) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO Posts (user_id, type, service, description, price,disponibilité) VALUES (?, ?, ?, ?, ?,'Disponible')",
       [userID, type, service, description, price],
       (err, result) => {
         if (err) {
@@ -291,6 +291,7 @@ app.get("/posts", (req, res) => {
         service,
         description,
         price,
+        disponibilité,
         name,
         profile_picture,
         image,
@@ -308,6 +309,7 @@ app.get("/posts", (req, res) => {
           service,
           description,
           price,
+          disponibilité,
           userName: name,
           userProfilePicture: profile_picture,
           images: [image],
@@ -347,6 +349,7 @@ app.get("/user_posts", async (req, res) => {
         service,
         description,
         price,
+        disponibilité,
         name,
         profile_picture,
         image,
@@ -364,6 +367,7 @@ app.get("/user_posts", async (req, res) => {
           service,
           description,
           price,
+          disponibilité,
           userName: name,
           userProfilePicture: profile_picture,
           images: [image],
@@ -387,6 +391,7 @@ app.get("/favorites", (req, res) => {
     p.service,
     p.description,
     p.price,
+    p.disponibilité,
     p.created_at,
     u.name,
     u.profile_picture,
@@ -418,6 +423,7 @@ app.get("/favorites", (req, res) => {
         service,
         description,
         price,
+        disponibilité,
         created_at,
         name,
         profile_picture,
@@ -436,6 +442,7 @@ app.get("/favorites", (req, res) => {
           service,
           description,
           price,
+          disponibilité,
           created_at,
           userName: name,
           userProfilePicture: profile_picture,
@@ -530,6 +537,17 @@ app.post("/update_post", async (req, res) => {
       }
     }
   );
+});
+/************************************************************** */
+app.post("/upload_favorite", async (req, res) => {
+  const { user_id, post_id } = req.body;
+  const sql = "INSERT into favorite (user_id,post_id) VALUES (?,?)";
+  db.query(sql, [user_id, post_id], (err, result) => {
+    if (err) {
+      res.status(500).send("Internal server error");
+    }
+    res.status(200).json({ message: "favorite uploaded successfully" });
+  });
 });
 
 app.listen(PORT, () => {

@@ -70,6 +70,27 @@ class MessageLookup extends MessageLookupByLibrary {
             "Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité, ou si vous souhaitez exercer vos droits concernant vos informations personnelles, veuillez nous contacter via ce site Web, l\'application mobile ou les coordonnées ci-dessus."),
         "contact_text": MessageLookupByLibrary.simpleMessage(
             "Tous les droits de développement et de publication sont réservés au développeur et à l\'encadrant, Dr. Kherici."),
+        "delete_dialogue_content": MessageLookupByLibrary.simpleMessage(
+            "Êtes-vous convaincu de supprimer?"),
+        "delete_dialogue_no": MessageLookupByLibrary.simpleMessage("Non"),
+        "delete_dialogue_title":
+            MessageLookupByLibrary.simpleMessage("Confirmation "),
+        "delete_dialogue_yes": MessageLookupByLibrary.simpleMessage("Oui"),
+        "details_delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
+        "details_modify": MessageLookupByLibrary.simpleMessage("Modifier"),
+        "details_noimages":
+            MessageLookupByLibrary.simpleMessage("Il n\'y a pas d\'images"),
+        "details_sendmessage":
+            MessageLookupByLibrary.simpleMessage("Envoyer message"),
+        "details_text1": MessageLookupByLibrary.simpleMessage("Description :"),
+        "details_text2": MessageLookupByLibrary.simpleMessage("Prix :"),
+        "details_text3": MessageLookupByLibrary.simpleMessage("Type"),
+        "details_text4": MessageLookupByLibrary.simpleMessage("Service"),
+        "details_text5": MessageLookupByLibrary.simpleMessage("Horaire"),
+        "details_text6": MessageLookupByLibrary.simpleMessage("Disponibilité"),
+        "details_text7": MessageLookupByLibrary.simpleMessage("Images :"),
+        "details_title": MessageLookupByLibrary.simpleMessage("Detailles"),
+        "favorite_title": MessageLookupByLibrary.simpleMessage("Mes favoris"),
         "filter_Equipement":
             MessageLookupByLibrary.simpleMessage("Equipements"),
         "filter_Location": MessageLookupByLibrary.simpleMessage("Location"),
@@ -94,6 +115,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Connecter à votre compte"),
         "login_page_username":
             MessageLookupByLibrary.simpleMessage("Nom d\'utilisateur"),
+        "myposts_title":
+            MessageLookupByLibrary.simpleMessage("Mes publications"),
         "principal_page_text1":
             MessageLookupByLibrary.simpleMessage("Publication à explorer"),
         "principal_page_text2": MessageLookupByLibrary.simpleMessage("Filtre"),
@@ -131,6 +154,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Creer votre propre compte"),
         "third_page_text1": MessageLookupByLibrary.simpleMessage("Récupérer"),
         "third_page_text2": MessageLookupByLibrary.simpleMessage(
-            "Récupérer les meilleures offres disponibles sur le marché et à des prix abordables.")
+            "Récupérer les meilleures offres disponibles sur le marché et à des prix abordables."),
+        "update_button": MessageLookupByLibrary.simpleMessage("Modifier"),
+        "update_text1": MessageLookupByLibrary.simpleMessage("Type :"),
+        "update_text2": MessageLookupByLibrary.simpleMessage("Service :"),
+        "update_text3": MessageLookupByLibrary.simpleMessage("Disponibilité :"),
+        "update_text4": MessageLookupByLibrary.simpleMessage("Description :"),
+        "update_text5": MessageLookupByLibrary.simpleMessage("Prix :"),
+        "update_tilte": MessageLookupByLibrary.simpleMessage("Mise à jour")
       };
 }

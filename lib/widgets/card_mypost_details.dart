@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
-import 'package:memoire/providers/favorite_provider.dart';
 import 'package:memoire/providers/usename_provider.dart';
+import 'package:memoire/secondary_pages/updating_product_page.dart';
 import 'package:memoire/services/admin_services.dart';
-import 'package:memoire/widgets/confirmation_widget.dart';
 import 'package:provider/provider.dart';
 
 class CardDetailMyPost extends StatefulWidget {
@@ -22,9 +21,9 @@ class _CardDetailState extends State<CardDetailMyPost> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text(
-              "confirmation",
-              style: TextStyle(
+            title: Text(
+              S.of(context).delete_dialogue_title,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.red,
               ),
@@ -44,9 +43,9 @@ class _CardDetailState extends State<CardDetailMyPost> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "NO",
-                      style: TextStyle(color: Colors.red),
+                    child: Text(
+                      S.of(context).delete_dialogue_no,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
                   TextButton(
@@ -59,9 +58,9 @@ class _CardDetailState extends State<CardDetailMyPost> {
                       );
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "YES",
-                      style: TextStyle(color: Colors.green),
+                    child: Text(
+                      S.of(context).delete_dialogue_yes,
+                      style: const TextStyle(color: Colors.green),
                     ),
                   ),
                 ],
@@ -199,15 +198,6 @@ class _CardDetailState extends State<CardDetailMyPost> {
                     )
                   ],
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.favorite,
-                    color: pressed
-                        ? Colors.red
-                        : const Color.fromRGBO(0, 0, 0, 0.3),
-                  ),
-                ),
               ],
             ),
             const SizedBox(
@@ -220,7 +210,7 @@ class _CardDetailState extends State<CardDetailMyPost> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        confirmation("Etes vous sur de supprimer ?");
+                        confirmation(S.of(context).delete_dialogue_content);
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
@@ -229,7 +219,7 @@ class _CardDetailState extends State<CardDetailMyPost> {
                           ),
                           minimumSize: const Size(double.infinity, 50)),
                       child: Text(
-                        "Supprimer",
+                        S.of(context).details_delete,
                         style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -243,7 +233,15 @@ class _CardDetailState extends State<CardDetailMyPost> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UpadatePage(product: widget.product),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: greenColor,
                           shape: RoundedRectangleBorder(
@@ -251,7 +249,7 @@ class _CardDetailState extends State<CardDetailMyPost> {
                           ),
                           minimumSize: const Size(double.infinity, 50)),
                       child: Text(
-                        "Modifier",
+                        S.of(context).details_modify,
                         style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

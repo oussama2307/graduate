@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:memoire/constants/utils.dart';
 import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/providers/favorite_provider.dart';
@@ -63,7 +66,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Mes favoris",
+                        S.of(context).favorite_title,
                         style: mystyle,
                       ),
                     ],
@@ -137,6 +140,7 @@ class _FavoritePageState extends State<FavoritePage> {
                             );
                           },
                           child: CardDetail(
+                            postid: post['post_id'],
                             type: post['type'],
                             soustype: post['service'],
                             description: post['description'],

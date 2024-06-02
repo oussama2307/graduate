@@ -65,6 +65,25 @@ class MessageLookup extends MessageLookupByLibrary {
             "إذا كان لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية هذه ، أو إذا كنت ترغب في ممارسة حقوقك فيما يتعلق بمعلوماتك الشخصية ، فيرجى الاتصال بنا من خلال هذا الموقع الإلكتروني أو التطبيق المحمول أو معلومات الاتصال أعلاه."),
         "contact_text": MessageLookupByLibrary.simpleMessage(
             "جميع حقوق التطوير والنشر محفوظة للمطور والمشرف ، الدكتور خريسي."),
+        "delete_dialogue_content":
+            MessageLookupByLibrary.simpleMessage("هل أنت متأكد من الحذف؟"),
+        "delete_dialogue_no": MessageLookupByLibrary.simpleMessage("لا"),
+        "delete_dialogue_title": MessageLookupByLibrary.simpleMessage("تأكيد"),
+        "delete_dialogue_yes": MessageLookupByLibrary.simpleMessage("نعم"),
+        "details_delete": MessageLookupByLibrary.simpleMessage("حذف"),
+        "details_modify": MessageLookupByLibrary.simpleMessage("تعديل"),
+        "details_noimages": MessageLookupByLibrary.simpleMessage("لا توجد صور"),
+        "details_sendmessage":
+            MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
+        "details_text1": MessageLookupByLibrary.simpleMessage("الوصف:"),
+        "details_text2": MessageLookupByLibrary.simpleMessage("السعر:"),
+        "details_text3": MessageLookupByLibrary.simpleMessage("النوع"),
+        "details_text4": MessageLookupByLibrary.simpleMessage("الخدمة"),
+        "details_text5": MessageLookupByLibrary.simpleMessage("الجدول الزمني"),
+        "details_text6": MessageLookupByLibrary.simpleMessage("التوافر"),
+        "details_text7": MessageLookupByLibrary.simpleMessage("الصور:"),
+        "details_title": MessageLookupByLibrary.simpleMessage("تفاصيل"),
+        "favorite_title": MessageLookupByLibrary.simpleMessage("المفضلة لدي"),
         "filter_Equipement": MessageLookupByLibrary.simpleMessage("المعدات"),
         "filter_Location": MessageLookupByLibrary.simpleMessage("التأجير"),
         "filter_surfaces": MessageLookupByLibrary.simpleMessage("المساحات"),
@@ -88,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول إلى حسابك"),
         "login_page_username":
             MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+        "myposts_title":
+            MessageLookupByLibrary.simpleMessage("المنشورات الخاصة بي"),
         "principal_page_text1":
             MessageLookupByLibrary.simpleMessage("المنشورات للاستكشاف"),
         "principal_page_text2": MessageLookupByLibrary.simpleMessage("تصفية"),
@@ -122,6 +143,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("أنشئ حسابك الخاص"),
         "third_page_text1": MessageLookupByLibrary.simpleMessage("استرداد"),
         "third_page_text2": MessageLookupByLibrary.simpleMessage(
-            ".استرد أفضل العروض المتاحة في السوق بسعر معقول")
+            ".استرد أفضل العروض المتاحة في السوق بسعر معقول"),
+        "update_button": MessageLookupByLibrary.simpleMessage("تعديل"),
+        "update_text1": MessageLookupByLibrary.simpleMessage("النوع:"),
+        "update_text2": MessageLookupByLibrary.simpleMessage("الخدمة:"),
+        "update_text3": MessageLookupByLibrary.simpleMessage("التوافر:"),
+        "update_text4": MessageLookupByLibrary.simpleMessage("الوصف:"),
+        "update_text5": MessageLookupByLibrary.simpleMessage("السعر:"),
+        "update_tilte": MessageLookupByLibrary.simpleMessage("تحديث")
       };
 }

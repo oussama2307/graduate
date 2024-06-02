@@ -12,7 +12,7 @@ class ThirdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 58, 182, 122),
+      backgroundColor: Color.fromARGB(255, 211, 146, 231),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Column(
@@ -45,7 +45,7 @@ class ThirdPage extends StatelessWidget {
             const Spacer(),
             Center(
               child: Image.asset(
-                'assets/images/image3.png',
+                'assets/images/farm.png',
                 colorBlendMode: BlendMode.dstATop, // Blend the colors
                 fit: BoxFit.contain,
               ),
