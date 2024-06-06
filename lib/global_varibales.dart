@@ -99,4 +99,4 @@ final Filters = [
 ];
 
 const List<String> languages = ["fr", "ar", "en"];
-const String urlhttp = 'https://e375-197-202-152-187.ngrok-free.app';
+const String urlhttp = 'http://192.168.1.38:3000';
