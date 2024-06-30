@@ -21,6 +21,10 @@ class _PostsPageState extends State<PostsPage> {
   List<dynamic>? _allPosts;
   String? _selectedFilter;
   late TextEditingController _searchController;
+  Timer? _debounce;
+  List<dynamic> _searchResults = [];
+  bool _isSearching = false;
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,7 @@ class _PostsPageState extends State<PostsPage> {
       final posts = await ApiService.fetchPosts();
       setState(() {
         _allPosts = posts; // Store the original list
-        _posts = posts; // Initialize _posts with the original list
+        _posts = _allPosts;
       });
     } catch (e) {
       print('Error fetching posts: $e');
@@ -57,24 +61,40 @@ class _PostsPageState extends State<PostsPage> {
     });
   }
 
-  Timer? _debounce;
-
   void _onSearchChanged() {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      _filterPosts(_searchController.text);
+      if (_searchController.text.isEmpty) {
+        setState(() {
+          _isSearching = false;
+          _searchResults = [];
+        });
+      } else {
+        setState(() {
+          _isSearching = true;
+          _searchResults = _allPosts!
+              .where((post) => post['description']
+                  .toLowerCase()
+                  .contains(_searchController.text.toLowerCase()))
+              .take(3)
+              .toList();
+        });
+      }
     });
   }
 
-  void _filterPosts(String query) {
-    List<dynamic> filteredPosts = _allPosts!.where((post) {
-      final postName = post['name'].toString().toLowerCase();
-      final searchQuery = query.toLowerCase();
-      return postName.contains(searchQuery);
-    }).toList();
-
+  void _onSearchResultSelected(String query) {
+    _searchController.text = query;
+    _searchController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _searchController.text.length),
+    );
     setState(() {
-      _posts = query.isEmpty ? _allPosts : filteredPosts;
+      _isSearching = false;
+      _searchResults = [];
+      _posts = _allPosts!
+          .where((post) =>
+              post['description'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -160,8 +180,38 @@ class _PostsPageState extends State<PostsPage> {
                     ),
                   ),
                   /********************************************************************** */
-                  
-                  
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onSubmitted: (value) => _onSearchResultSelected(value),
+                    ),
+                  ),
+
+                  // Add search results
+                  if (_isSearching && _searchResults.isNotEmpty)
+                    Container(
+                      color: Colors.white,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _searchResults.length,
+                        itemBuilder: (context, index) {
+                          final post = _searchResults[index];
+                          return ListTile(
+                            title: Text(post['description']),
+                            onTap: () =>
+                                _onSearchResultSelected(post['description']),
+                          );
+                        },
+                      ),
+                    ),
                   /******************************************************************** */
                   Expanded(
                     child: ListView.builder(

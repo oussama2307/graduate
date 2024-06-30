@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:memoire/authentication_pages/login_page.dart';
 import 'package:memoire/global_varibales.dart';
 import 'package:memoire/principale_pages/favorite_page.dart';
+import 'package:memoire/providers/chat_provider.dart';
 import 'package:memoire/providers/favorite_provider.dart';
 import 'package:memoire/providers/language_provider.dart';
 import 'package:memoire/providers/posts_provider.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => LanguageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatProvider(),
         ),
       ],
       child: Consumer<LanguageProvider>(

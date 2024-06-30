@@ -93,5 +93,6 @@
   "delete_dialogue_title": "Confirmation",
   "delete_dialogue_content": "Are you sure to delete?",
   "delete_dialogue_yes": "Yes",
-  "delete_dialogue_no": "No"
+  "delete_dialogue_no": "No",
+  "message": "Type a message"
 }

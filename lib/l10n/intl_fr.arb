@@ -93,5 +93,6 @@
   "delete_dialogue_title": "Confirmation ",
   "delete_dialogue_content": "Êtes-vous convaincu de supprimer?",
   "delete_dialogue_yes": "Oui",
-  "delete_dialogue_no": "Non"
+  "delete_dialogue_no": "Non",
+  "message": "Écrivez un message"
 }

@@ -106,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_page_text3":
             MessageLookupByLibrary.simpleMessage("Connect to your account"),
         "login_page_username": MessageLookupByLibrary.simpleMessage("Username"),
+        "message": MessageLookupByLibrary.simpleMessage("Type a message"),
         "myposts_title": MessageLookupByLibrary.simpleMessage("My Posts"),
         "principal_page_text1":
             MessageLookupByLibrary.simpleMessage("Publications to explore"),

@@ -93,5 +93,6 @@
   "delete_dialogue_title": "تأكيد",
   "delete_dialogue_content": "هل أنت متأكد من الحذف؟",
   "delete_dialogue_yes": "نعم",
-  "delete_dialogue_no": "لا"
+  "delete_dialogue_no": "لا",
+  "message": "اكتب رسالة"
 }

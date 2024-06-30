@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memoire/generated/l10n.dart';
 import 'package:memoire/global_varibales.dart';
+import 'package:memoire/principale_pages/sending_page.dart';
 import 'package:memoire/providers/usename_provider.dart';
 import 'package:memoire/secondary_pages/updating_product_page.dart';
 import 'package:memoire/services/admin_services.dart';
@@ -446,7 +447,15 @@ class ProductDetailsState extends State<ProductDetails> {
                     Provider.of<UsernameProvider>(context, listen: false)
                         .user['name']
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => IndividualChatPage(
+                            otherUserName: widget.product['userName'],
+                          ),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: greenColor,
                       minimumSize: const Size(double.infinity, 60),

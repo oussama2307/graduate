@@ -107,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول إلى حسابك"),
         "login_page_username":
             MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+        "message": MessageLookupByLibrary.simpleMessage("اكتب رسالة"),
         "myposts_title":
             MessageLookupByLibrary.simpleMessage("المنشورات الخاصة بي"),
         "principal_page_text1":
